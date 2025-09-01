@@ -1,0 +1,113 @@
+
+<%- include('./partials/header') %>
+
+<% if(success.length > 0){ %>
+    <div class="fixed top-5 left-1/2 -translate-x-1/2 p-3 rounded-lg bg-green-500 shadow-lg z-50 animate-bounce">
+        <span class="inline-block text-white font-semibold">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-purple-50 pt-20">
+    <div class="container mx-auto px-6 py-10 flex flex-col lg:flex-row gap-6 flex-grow pt-10">
+        
+        <!-- Sidebar -->
+        <aside class="w-full lg:w-1/4 bg-gradient-to-br from-indigo-100 to-blue-200 rounded-2xl p-6 shadow-lg">
+            <h3 class="font-bold text-gray-800 mb-4 text-lg">Navigation</h3>
+            <div class="flex flex-col space-y-3">
+                <a href="#" id="showProducts" class="block px-4 py-2 rounded-lg bg-white shadow hover:bg-indigo-500 hover:text-white transition">
+                    All Products
+                </a>
+                <a href="#" id="showCreate" class="block px-4 py-2 rounded-lg bg-white shadow hover:bg-indigo-500 hover:text-white transition">
+                    Create New Product
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Section -->
+        <main class="w-full lg:w-3/4 bg-white p-8 rounded-2xl shadow-xl">
+            
+            <!-- All Products Section -->
+            <div id="allProducts">
+                <h2 class="text-3xl font-extrabold mb-8 text-indigo-600">All Products</h2>
+                <% if (products.length > 0) { %>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <% products.forEach(function(product) { %>
+                            <div class="p-4 rounded-xl shadow bg-gradient-to-br from-indigo-50 to-purple-50">
+                                <h3 class="font-bold text-lg"><%= product.name %></h3>
+                                <p class="text-gray-600">₹<%= product.price %></p>
+                                <% if(product.discount){ %>
+                                    <p class="text-green-600">Discount: ₹<%= product.discount %></p>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p class="text-gray-500">No products found.</p>
+                <% } %>
+            </div>
+
+            <!-- Create Product Section -->
+            <div id="createProduct" class="hidden">
+                <h2 class="text-3xl font-extrabold mb-8 text-indigo-600">Create New Product</h2>
+                
+                <form autocomplete="off" action="/products/create" method="post" enctype="multipart/form-data" class="space-y-8">
+                    
+                    <!-- Product Details -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-purple-600">Product Details</h3>
+                        <div class="mb-4">
+                            <label class="block mb-2 font-medium text-gray-700">Product Image</label>
+                            <input name="image" type="file" class="py-2 px-3 border rounded-lg w-full bg-gradient-to-r from-gray-50 to-gray-100 focus:ring-2 focus:ring-indigo-400">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <input name="name" type="text" placeholder="Product Name" class="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-300">
+                            <input name="price" type="text" placeholder="Product Price" class="border p-3 rounded-lg w-full focus:ring-2 focus:ring-green-300">
+                            <input name="discount" type="text" placeholder="Discount Price" class="border p-3 rounded-lg w-full focus:ring-2 focus:ring-yellow-300">
+                        </div>
+                    </div>
+
+                    <!-- Panel Details -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-indigo-600">Panel Details</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <input name="bgcolor" type="text" placeholder="Background Color" class="border p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-300">
+                            <input name="panelcolor" type="text" placeholder="Panel Color" class="border p-3 rounded-lg w-full focus:ring-2 focus:ring-purple-300">
+                            <input name="textcolor" type="text" placeholder="Text Color" class="border p-3 rounded-lg w-full focus:ring-2 focus:ring-red-300">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div >
+                        <input class="px-8 py-3 rounded-xl mt-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg text-white font-semibold cursor-pointer w-full sm:w-auto transform hover:scale-105" 
+                            type="submit" value="Create New Product">
+                    </div>
+                </form>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>
+
+<script>
+    document.getElementById("showProducts").addEventListener("click", function(e){
+        e.preventDefault();
+        document.getElementById("allProducts").classList.remove("hidden");
+        document.getElementById("createProduct").classList.add("hidden");
+    });
+
+    document.getElementById("showCreate").addEventListener("click", function(e){
+        e.preventDefault();
+        document.getElementById("allProducts").classList.add("hidden");
+        document.getElementById("createProduct").classList.remove("hidden");
+    });
+</script>
+
+
+
+
+
+
