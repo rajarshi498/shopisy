@@ -42,14 +42,15 @@ module.exports.loginUser = async function (req, res) {
 
     let user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(401).send("Email or Password incorrect");
+    req.flash("error", "Email or password is incorrect");
+    return res.redirect("/");
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
-    //   return res.status(401).send("Email or Password incorrect");
-        req.flash("error","Email or password is incorrect");
-        return res.redirect("/");
+    req.flash("error", "Email or password is incorrect");
+    return res.redirect("/");
     }
 
     let token = generateToken(user);
